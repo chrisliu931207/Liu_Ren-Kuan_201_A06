@@ -1,7 +1,7 @@
 ---
 title: "Assignment 6"
 subtitle: "STAT 201"
-author: "YOUR NAME"
+author: "Ren-Kuan Liu"
 
 format:
   html:
@@ -48,7 +48,7 @@ To get full credit for this Question you must:
 
 ## Github Repo Link
 
-[https://your-github-repo-url](https://your-github-repo-url)
+[https://github.com/chrisliu931207/Liu_Ren-Kuan_201_A06](https://github.com/chrisliu931207/Liu_Ren-Kuan_201_A06)
 
 :::
 
@@ -56,7 +56,7 @@ To get full credit for this Question you must:
 
 ## Screenshot/image of RStudio
 
-![](filepath.png)
+![](githubscreenshot.png)
 
 :::
 
@@ -102,7 +102,11 @@ Extract the value `8162` (LeBron James points) in 2 different ways:
 - using names
 
 ```{r}
+# use indexing
+player_info[[2]][[4]]
 
+# use names
+player_info$LJ$points
 ```
 
 
@@ -113,7 +117,15 @@ Add a new named element to the end of each player's list called `height`. The he
 Print the `player_info` list to prove you were successful.
 
 ```{r}
+# create a vector with the heights of players
+heights <- c(MJ = 78, LJ = 81, KB = 78, KA = 86, SO = 85)
 
+# iterate through player names in "player info" and add corresponding height of each player
+for (i in names (player_info)){
+  player_info[[i]][["height"]] <- heights[[i]]
+}
+
+print(player_info)
 ```
 
 
@@ -132,7 +144,19 @@ Hint: initialize an empty list
 Note: this must still run correctly even if the values were to change or if another player were added to the list or if the player order changed.
 
 ```{r}
+# initialize empty list
+points_per_game <- list()
 
+# use a for loop to it
+for(i in names(player_info)){
+  # use indexing to get the value for both "points" and "games_played"
+  # divide points by games played to get average points and store it as "avg_points"
+  avg_points <- player_info[[i]][["points"]]/player_info[[i]][["games_played"]]
+  # add to new list
+  points_per_game[[i]] <- c(avg_points)
+}
+
+print(points_per_game)
 ```
 
 
@@ -143,7 +167,12 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
+rounded <- function(x){
+  round(x,2)
+}
 
+rounded_points <- sapply(points_per_game,rounded)
+print(rounded_points)
 ```
 
 
@@ -164,7 +193,17 @@ ie: 91 rounds to 90; 173 rounds to 200; 1450 rounds to 1000
 Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a row/col.
 
 ```{r}
-
+rounded_digits <- function(num){
+  if (nchar(num)==2){
+    round(num,-1)
+  } else if(nchar(num)==3){
+    round(num,-2)
+  } else if(nchar(num)==4){
+    round(num,-3)
+  }
+}
+round_mat_rand <- apply(mat_rand,1:2,rounded_digits)
+print(round_mat_rand)
 ```
 
 
@@ -188,7 +227,7 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
 
 ```{r}
-
+colMeans(max_temps[3:14])
 ```
 
 
@@ -203,6 +242,9 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
+colorado_temp <- max_temps[max_temps$state=="CO",]
+print(colorado_temp)
+
 
 ```
 
@@ -224,7 +266,7 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
-
+median_temp <- apply([])
 ```
 
 
@@ -237,6 +279,17 @@ Example: The number 312 would return 6 (3 + 1 + 2)
 Run your function with 935068.
 
 ```{r}
-
+#digits_sum <- function(num){
+#if(num==0){
+ #   return(num)
+  #}else{
+   # last_digit <- num%%10
+    #rest_digits <- num%%10
+    #return(last_digit + digits_sum(rest_digits))
+    
+#  }
+#}
+#result <- digits_sum(31)
+#print(result)
 ```
 
