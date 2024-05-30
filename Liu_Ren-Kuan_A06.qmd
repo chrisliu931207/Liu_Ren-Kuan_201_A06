@@ -245,6 +245,12 @@ No need to print any output here.
 colorado_temp <- max_temps[max_temps$state=="CO",]
 print(colorado_temp)
 
+ohio_temp <- max_temps[max_temps$state=="OH",]
+print(ohio_temp)
+
+virginia_temp <- max_temps[max_temps$state=="VA",]
+print(virginia_temp)
+
 
 ```
 
@@ -266,7 +272,8 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
-median_temp <- apply([])
+median_temp <- apply(colorado_temp[,3:14],1,median)
+print(sprintf("The maximum median annual temperature of %.2f occurred in %d and the minimum median annual temperature of %.2f occurred in %d.",max(median_temp),which.max(median_temp),min(median_temp),which.min(median_temp)))
 ```
 
 
