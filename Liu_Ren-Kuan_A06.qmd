@@ -167,10 +167,13 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
+# define a function that rounds the value to two decimal places
 rounded <- function(x){
   round(x,2)
 }
 
+# use sapply to apply the rounded function to each value in "points_per_game" list
+# store the vector to "rounded_points"
 rounded_points <- sapply(points_per_game,rounded)
 print(rounded_points)
 ```
@@ -193,15 +196,21 @@ ie: 91 rounds to 90; 173 rounds to 200; 1450 rounds to 1000
 Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a row/col.
 
 ```{r}
+# define a function that rounds number based on the number of digits
 rounded_digits <- function(num){
+  # if 2 digits, round it to the nearest 10
   if (nchar(num)==2){
     round(num,-1)
+    # if 3 digits, round it to the nearest 100
   } else if(nchar(num)==3){
     round(num,-2)
+    # if 4 digits, round it to the nearest 1000
   } else if(nchar(num)==4){
     round(num,-3)
   }
 }
+
+# apply the function to every element of "mat_rand"
 round_mat_rand <- apply(mat_rand,1:2,rounded_digits)
 print(round_mat_rand)
 ```
@@ -227,6 +236,7 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
 
 ```{r}
+# us the colMeans function to find the average temperature for each month
 colMeans(max_temps[3:14])
 ```
 
@@ -242,12 +252,15 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
+# extract rows from "max_temps" where the state is CO
 colorado_temp <- max_temps[max_temps$state=="CO",]
 print(colorado_temp)
 
+# extract rows from "max_temps" where the state is OH
 ohio_temp <- max_temps[max_temps$state=="OH",]
 print(ohio_temp)
 
+# extract rows from "max_temps" where the state is VA
 virginia_temp <- max_temps[max_temps$state=="VA",]
 print(virginia_temp)
 
@@ -272,8 +285,11 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
+# find the median of the annual temperature in Colorado and store it as "median_temp"
 median_temp <- apply(colorado_temp[,3:14],1,median)
-print(sprintf("The maximum median annual temperature of %.2f occurred in %d and the minimum median annual temperature of %.2f occurred in %d.",max(median_temp),which.max(median_temp),min(median_temp),which.min(median_temp)))
+
+# use max(), min(), which.max(), which.min() functions to complete the sentence
+print(sprintf("The maximum median annual temperature of %.2f occurred in %d and the minimum median annual temperature of %.2f occurred in %d.",max(median_temp),colorado_temp$year[which.max(median_temp)],min(median_temp),colorado_temp$year[which.min(median_temp)]))
 ```
 
 
@@ -286,12 +302,18 @@ Example: The number 312 would return 6 (3 + 1 + 2)
 Run your function with 935068.
 
 ```{r}
+# define a recursive function that calculates the sum of the digits of a number
 digits_sum <- function(num){
+  
+  # Base Case -> if the number is 0, return 0
 if(num==0){
     return(num)
   }else{
+    # find the last digit of the number by finding the remainder when num is divided by 10
     last_digit <- num%%10
+    # find the rest of the digits of the number by finding the integer division when num is divided by ten
     rest_digits <- num%/%10
+    # recursive call to sum the rest of the digits and add the last digit
     return(last_digit + digits_sum(rest_digits))
     
   }
